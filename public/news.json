@@ -1,0 +1,15 @@
+[
+  {
+    "id": "2026-05-22-001",
+    "date": "2026-05-22",
+    "title": "お知らせタイトル",
+    "menuName": "メニュー名",
+    "price": "1300円",
+    "salesTime": "11:30〜14:00",
+    "bodyJa": "日本語本文",
+    "bodyEn": "English body text",
+    "imageAlt": "画像の説明文",
+    "imageUrl": "",
+    "source": "instagram"
+  }
+]
