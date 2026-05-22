@@ -37,6 +37,10 @@ execute function public.set_news_updated_at();
 
 alter table public.news enable row level security;
 
+grant usage on schema public to service_role;
+grant select, insert, update, delete on public.news to service_role;
+grant select on public.news to anon, authenticated;
+
 drop policy if exists "Public can read published news" on public.news;
 
 create policy "Public can read published news"
