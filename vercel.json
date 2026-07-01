@@ -14,6 +14,22 @@
       "use": "@vercel/static"
     },
     {
+      "src": "lunch/index.html",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "dinner/index.html",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "english/index.html",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "access/index.html",
+      "use": "@vercel/static"
+    },
+    {
       "src": "style.css",
       "use": "@vercel/static"
     },
@@ -38,6 +54,14 @@
       "use": "@vercel/static"
     },
     {
+      "src": "sitemap.xml",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "robots.txt",
+      "use": "@vercel/static"
+    },
+    {
       "src": "public/**",
       "use": "@vercel/static"
     }
@@ -54,6 +78,30 @@
     {
       "src": "/news/?",
       "dest": "/news/index.html"
+    },
+    {
+      "src": "/lunch/?",
+      "dest": "/lunch/index.html"
+    },
+    {
+      "src": "/dinner/?",
+      "dest": "/dinner/index.html"
+    },
+    {
+      "src": "/english/?",
+      "dest": "/english/index.html"
+    },
+    {
+      "src": "/access/?",
+      "dest": "/access/index.html"
+    },
+    {
+      "src": "/sitemap.xml",
+      "dest": "/sitemap.xml"
+    },
+    {
+      "src": "/robots.txt",
+      "dest": "/robots.txt"
     },
     {
       "src": "/",
