@@ -273,6 +273,11 @@ h3 {
     display: block;
 }
 
+.mobile-title span {
+    display: inline-block;
+    white-space: nowrap;
+}
+
 .hero-copy {
     max-width: 620px;
     margin-top: 1.5rem;
@@ -1151,8 +1156,10 @@ h3 {
     }
 
     .hero h1 {
-        max-width: 7em;
-        font-size: clamp(2.5rem, 11vw, 3.05rem);
+        max-width: none;
+        font-size: clamp(1.9rem, 8vw, 2.35rem);
+        line-height: 1.18;
+        letter-spacing: 0;
     }
 
     .hero-copy {
