@@ -209,3 +209,20 @@ function formatNewsDate(dateText) {
         day: 'numeric'
     }).format(date);
 }
+
+// DM例文コピーボタン
+document.querySelectorAll('[data-copy-target]').forEach((button) => {
+    button.addEventListener('click', () => {
+        const target = document.querySelector(button.dataset.copyTarget);
+        if (!target || !navigator.clipboard) {
+            return;
+        }
+        navigator.clipboard.writeText(target.textContent.trim()).then(() => {
+            const original = button.textContent;
+            button.textContent = 'コピーしました';
+            setTimeout(() => {
+                button.textContent = original;
+            }, 2000);
+        });
+    });
+});
