@@ -1,7 +1,7 @@
 const crypto = require('node:crypto');
+const { put } = require('@vercel/blob');
 
 const MAX_IMAGE_BYTES = 5 * 1024 * 1024;
-const IMAGE_BUCKET = 'news-images';
 const SUPPORTED_TYPES = {
   'image/jpeg': 'jpg',
   'image/png': 'png',
@@ -34,8 +34,14 @@ module.exports = async function handler(request, response) {
 
     const image = await readImageBody(request);
     const fileName = `${postId}.${extension}`;
-    const publicUrl = await uploadImage(fileName, contentType, image);
-    response.status(201).json({ success: true, url: publicUrl, fileName });
+    requireBlobStore();
+    const blob = await put(`images/${fileName}`, image, {
+      access: 'public',
+      addRandomSuffix: false,
+      allowOverwrite: true,
+      contentType
+    });
+    response.status(201).json({ success: true, url: blob.url, fileName });
   } catch (error) {
     response.status(error.statusCode || 500).json({
       success: false,
@@ -50,74 +56,10 @@ module.exports.config = {
   }
 };
 
-function getSupabaseConfig() {
-  const url = process.env.SUPABASE_URL;
-  const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
-  if (!url || !serviceRoleKey) {
+function requireBlobStore() {
+  if (!process.env.BLOB_READ_WRITE_TOKEN) {
     throwHttpError(500, '画像保存先が設定されていません。');
   }
-  return { url: url.replace(/\/+$/, ''), serviceRoleKey };
-}
-
-function storageHeaders(contentType) {
-  const { serviceRoleKey } = getSupabaseConfig();
-  return {
-    apikey: serviceRoleKey,
-    Authorization: `Bearer ${serviceRoleKey}`,
-    ...(contentType ? { 'Content-Type': contentType } : {})
-  };
-}
-
-async function uploadImage(fileName, contentType, image) {
-  const { url } = getSupabaseConfig();
-  let result = await putObject(url, fileName, contentType, image);
-  if (!result.response.ok && isMissingBucket(result.details)) {
-    await ensurePublicBucket(url);
-    result = await putObject(url, fileName, contentType, image);
-  }
-
-  if (!result.response.ok) {
-    throwHttpError(result.response.status || 502, result.details?.message || result.details?.error || '画像を保存できませんでした。');
-  }
-
-  return `${url}/storage/v1/object/public/${IMAGE_BUCKET}/${encodeURIComponent(fileName)}`;
-}
-
-async function putObject(url, fileName, contentType, image) {
-  const response = await fetch(`${url}/storage/v1/object/${IMAGE_BUCKET}/${encodeURIComponent(fileName)}`, {
-    method: 'POST',
-    headers: {
-      ...storageHeaders(contentType),
-      'x-upsert': 'true'
-    },
-    body: image
-  });
-  const details = await response.json().catch(() => null);
-  return { response, details };
-}
-
-async function ensurePublicBucket(url) {
-  const response = await fetch(`${url}/storage/v1/bucket`, {
-    method: 'POST',
-    headers: storageHeaders('application/json'),
-    body: JSON.stringify({
-      id: IMAGE_BUCKET,
-      name: IMAGE_BUCKET,
-      public: true,
-      file_size_limit: MAX_IMAGE_BYTES,
-      allowed_mime_types: Object.keys(SUPPORTED_TYPES)
-    })
-  });
-
-  if (!response.ok && response.status !== 409) {
-    const details = await response.json().catch(() => null);
-    throwHttpError(response.status || 502, details?.message || details?.error || '画像保存領域を準備できませんでした。');
-  }
-}
-
-function isMissingBucket(details) {
-  const message = String(details?.message || details?.error || '').toLowerCase();
-  return message.includes('bucket') && (message.includes('not found') || message.includes('does not exist'));
 }
 
 async function readImageBody(request) {

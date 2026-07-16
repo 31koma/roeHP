@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "check": "node --check script.js && node --check api/news.js && node --check api/news/create.js && node --check api/news/upload.js && node --check lib/supabase-news.js"
+    "check": "node --check script.js && node --check api/news.js && node --check api/news/create.js && node --check api/news/upload.js && node --check lib/news-store.js"
+  },
+  "dependencies": {
+    "@vercel/blob": "^2.6.1"
   }
 }

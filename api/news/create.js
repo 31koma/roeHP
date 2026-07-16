@@ -1,5 +1,5 @@
 const crypto = require('node:crypto');
-const { insertNews } = require('../../lib/supabase-news');
+const { insertNews } = require('../../lib/news-store');
 
 module.exports = async function handler(request, response) {
   setCorsHeaders(response);

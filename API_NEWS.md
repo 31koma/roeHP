@@ -1,22 +1,17 @@
 # Roe's Kitchen News API
 
-Roe's Kitchen公式ホームページのお知らせは、Vercel API RouteからSupabaseへ保存します。ホームページ側は `/api/news` から公開済みのお知らせを取得して表示します。
+Roe's Kitchen公式ホームページのお知らせは、Vercel API RouteからVercel Blobへ保存します。ホームページ側は `/api/news` から公開済みのお知らせを取得して表示します。
 
-## Supabase環境変数
+## 保存先
 
-VercelのProduction環境に以下を設定してください。
+Vercelプロジェクトに公開Blobストアを接続します。接続時に `BLOB_READ_WRITE_TOKEN` が自動設定されます。投稿認証用の `NEWS_API_KEY` はProduction環境へ設定してください。
 
 ```text
 NEWS_API_KEY=自動投稿アプリから送る共有キー
-SUPABASE_URL=https://xxxxxxxx.supabase.co
-SUPABASE_SERVICE_ROLE_KEY=Supabaseのservice_roleキー
+BLOB_READ_WRITE_TOKEN=Vercel Blobが自動設定
 ```
 
-`SUPABASE_SERVICE_ROLE_KEY` はサーバー専用です。ブラウザ側には出さないでください。
-
-## Supabase SQL
-
-Supabase SQL Editorで [supabase/schema.sql](./supabase/schema.sql) を実行してください。
+`BLOB_READ_WRITE_TOKEN` はサーバー専用です。ブラウザ側には出さないでください。
 
 ## POST /api/news/create
 
@@ -71,7 +66,7 @@ curl -X POST https://roe-kyoto.com/api/news/create \
 
 ## POST /api/news/upload
 
-お知らせ画像を公開用の `news-images` バケットへ保存します。`x-api-key` と `x-post-id` が必要です。バケットが未作成の場合は、最初のアップロード時に公開バケットとして作成されます。
+お知らせ画像を公開Blobストアへ保存します。`x-api-key` と `x-post-id` が必要です。
 
 ```sh
 curl -X POST https://roe-kyoto.com/api/news/upload \

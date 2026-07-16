@@ -1,4 +1,4 @@
-const { fetchPublishedNews } = require('../lib/supabase-news');
+const { fetchPublishedNews } = require('../lib/news-store');
 
 module.exports = async function handler(request, response) {
   setCorsHeaders(response);
