@@ -19,6 +19,7 @@ module.exports = async function handler(request, response) {
     const news = await fetchPublishedNews(limit);
     response.status(200).json(news);
   } catch (error) {
+    console.error('[news] Failed to read published news:', error.name, error.message);
     response.status(error.statusCode || 500).json({
       success: false,
       reason: error.statusCode ? error.message : 'Internal server error.',

@@ -43,6 +43,7 @@ module.exports = async function handler(request, response) {
     });
     response.status(201).json({ success: true, url: blob.url, fileName });
   } catch (error) {
+    console.error('[news] Failed to upload image:', error.name, error.message);
     response.status(error.statusCode || 500).json({
       success: false,
       reason: error.statusCode ? error.message : '画像を保存できませんでした。'

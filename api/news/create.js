@@ -20,6 +20,7 @@ module.exports = async function handler(request, response) {
     await insertNews(parseRequestBody(request.body));
     response.status(201).json({ success: true });
   } catch (error) {
+    console.error('[news] Failed to create news:', error.name, error.message);
     response.status(error.statusCode || 500).json({
       success: false,
       reason: error.statusCode ? error.message : 'Internal server error.',
