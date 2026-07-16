@@ -69,6 +69,24 @@ curl -X POST https://roe-kyoto.com/api/news/create \
 { "success": false, "reason": "理由" }
 ```
 
+## POST /api/news/upload
+
+お知らせ画像を公開用の `news-images` バケットへ保存します。`x-api-key` と `x-post-id` が必要です。バケットが未作成の場合は、最初のアップロード時に公開バケットとして作成されます。
+
+```sh
+curl -X POST https://roe-kyoto.com/api/news/upload \
+  -H 'Content-Type: image/jpeg' \
+  -H 'x-api-key: NEWS_API_KEYの値' \
+  -H 'x-post-id: roes-post-20260716-example' \
+  --data-binary '@image.jpg'
+```
+
+成功時は、ホームページから表示できる公開画像URLを返します。
+
+```json
+{ "success": true, "url": "https://.../storage/v1/object/public/news-images/...jpg" }
+```
+
 ## GET /api/news
 
 公開済みのお知らせだけを日付降順で返します。

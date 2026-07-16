@@ -68,6 +68,10 @@
   ],
   "routes": [
     {
+      "src": "/api/news/upload",
+      "dest": "/api/news/upload.js"
+    },
+    {
       "src": "/api/news/create",
       "dest": "/api/news/create.js"
     },
