@@ -83,9 +83,22 @@ async function renderNewsLists() {
 
     const newsItems = await fetchNewsItems();
 
+    // 「お知らせ・休業」（idが notice- / oshirase- で始まる投稿）は、
+    // 毎日の定食投稿で流れないよう、常に先頭へ固定表示する
+    const isNotice = item => /^(notice|oshirase)-/.test(item.id);
+
     lists.forEach(list => {
         const limit = Number.parseInt(list.dataset.newsLimit, 10);
-        const visibleItems = Number.isFinite(limit) ? newsItems.slice(0, limit) : newsItems;
+
+        let orderedItems = newsItems;
+        if (Number.isFinite(limit)) {
+            const latestNotice = newsItems.find(isNotice);
+            if (latestNotice) {
+                orderedItems = [latestNotice, ...newsItems.filter(item => item !== latestNotice)];
+            }
+        }
+
+        const visibleItems = Number.isFinite(limit) ? orderedItems.slice(0, limit) : orderedItems;
 
         list.innerHTML = '';
 
