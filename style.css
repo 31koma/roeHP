@@ -834,14 +834,16 @@ h3 {
 }
 
 .news-card-image {
-    aspect-ratio: 4 / 3;
     background: var(--paper-deep);
 }
 
+/* 写真を切り抜かず、全体を表示する */
 .news-card-image img {
+    display: block;
     width: 100%;
-    height: 100%;
-    object-fit: cover;
+    height: auto;
+    max-height: 32rem;
+    object-fit: contain;
 }
 
 .news-card-content {
@@ -892,6 +894,16 @@ h3 {
 .news-card-body {
     color: var(--muted);
     font-size: 0.94rem;
+    /* 投稿本文の改行をそのまま表示する */
+    white-space: pre-line;
+}
+
+/* トップページでは長い本文を6行までで省略（全文はお知らせ一覧で表示） */
+.news-list-home .news-card-body {
+    display: -webkit-box;
+    -webkit-line-clamp: 6;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
 }
 
 .news-empty {
