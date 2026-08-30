@@ -7,7 +7,7 @@
 - お知らせ画像: R2（`roes-kitchen-media`）
 - 投稿認証: Worker secret `NEWS_API_KEY`
 
-VercelとSupabaseへの依存をなくし、Cloudflareの `workers.dev` で全ページ、D1読み書き、R2画像アップロードを実測しています。
+Vercelホスティングへの依存をなくし、Cloudflareの `workers.dev` で全ページ、D1読み書き、R2画像アップロードを実測しています。HPの実運用ではSupabaseを使用していません。
 
 ## 現在の公開状況（2026-08-30）
 
@@ -39,4 +39,4 @@ VercelとSupabaseへの依存をなくし、Cloudflareの `workers.dev` で全�
 - 実際にお知らせを1件作成し、一覧に出ることを確認する
 - Workerログにエラーが残っていない
 
-検収は完了しています。旧Vercel API、旧Supabaseスキーマ、旧ホスティング設定はリポジトリから削除済みです。
+検収は完了しています。旧Vercel API、実運用されていなかったSupabaseスキーマ、旧ホスティング設定はリポジトリから削除済みです。ロエズオフィスは別システムであり、現在のVercel＋Supabase構成には触れません。
