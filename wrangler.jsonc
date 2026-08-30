@@ -1,0 +1,45 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "roes-kitchen",
+  "main": "./src/worker.js",
+  "compatibility_date": "2026-08-30",
+  "workers_dev": true,
+  "routes": [
+    {
+      "pattern": "roe-kyoto.com",
+      "custom_domain": true
+    },
+    {
+      "pattern": "www.roe-kyoto.com",
+      "custom_domain": true
+    }
+  ],
+  "assets": {
+    "directory": "./dist",
+    "binding": "ASSETS",
+    "run_worker_first": [
+      "/api",
+      "/api/*",
+      "/media/*"
+    ],
+    "html_handling": "force-trailing-slash",
+    "not_found_handling": "none"
+  },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "roes-kitchen-news",
+      "database_id": "fb947279-83b4-4d99-96df-f9f20c3e296f",
+      "migrations_dir": "./migrations"
+    }
+  ],
+  "r2_buckets": [
+    {
+      "binding": "MEDIA",
+      "bucket_name": "roes-kitchen-media"
+    }
+  ],
+  "observability": {
+    "enabled": true
+  }
+}

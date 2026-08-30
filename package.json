@@ -3,9 +3,14 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "check": "node --check script.js && node --check api/news.js && node --check api/news/create.js && node --check api/news/upload.js && node --check lib/news-store.js"
+    "build": "node scripts/build-static.mjs",
+    "check": "node --check script.js && node --check src/worker.js && node --check scripts/build-static.mjs",
+    "dev": "npm run build && wrangler dev",
+    "deploy": "npm run check && npm run build && wrangler deploy",
+    "db:migrate:local": "wrangler d1 migrations apply roes-kitchen-news --local",
+    "db:migrate:remote": "wrangler d1 migrations apply roes-kitchen-news --remote"
   },
-  "dependencies": {
-    "@vercel/blob": "^2.6.1"
+  "devDependencies": {
+    "wrangler": "^4.127.1"
   }
 }

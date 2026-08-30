@@ -1,5 +1,5 @@
 #!/bin/bash
-# ホームページの変更をインターネットに公開する（ダブルクリックするだけでOK）
+# ホームページの変更をCloudflareへ公開する（ダブルクリックするだけでOK）
 
 cd "$(dirname "$0")"
 
@@ -7,23 +7,32 @@ echo "================================"
 echo " ホームページの変更を公開します"
 echo "================================"
 
-# 前回の処理が途中で止まった時に残るロックファイルを掃除
-rm -f .git/index.lock
-
-git add -A
-git commit -m "ホームページ更新 $(date '+%Y-%m-%d %H:%M')"
-git push origin main
-
-if [ $? -eq 0 ]; then
-  echo ""
-  echo "================================"
-  echo " 公開の受付が完了しました！"
-  echo " 1〜2分後にホームページへ反映されます"
-  echo " この画面は閉じて大丈夫です"
-  echo "================================"
-else
-  echo ""
-  echo "公開に失敗しました。この画面の内容をコマやんアプリのチャットに貼ってください。"
+if ! npm run check || ! npm run build; then
+  echo "公開前の検査に失敗しました。この画面の内容をコマやんアプリのチャットに貼ってください。"
+  read -r -p "Enterキーで閉じます"
+  exit 1
 fi
 
-sleep 5
+git add -A
+if ! git diff --cached --quiet; then
+  git commit -m "ホームページ更新 $(date '+%Y-%m-%d %H:%M')" || exit 1
+fi
+
+if ! git push origin main; then
+  echo "公開に失敗しました。この画面の内容をコマやんアプリのチャットに貼ってください。"
+  read -r -p "Enterキーで閉じます"
+  exit 1
+fi
+
+if ! npx wrangler deploy; then
+  echo "Cloudflareへの公開に失敗しました。この画面の内容をコマやんアプリのチャットに貼ってください。"
+  read -r -p "Enterキーで閉じます"
+  exit 1
+fi
+
+echo ""
+echo "================================"
+echo " Cloudflareへの公開が完了しました！"
+echo " この画面は閉じて大丈夫です"
+echo "================================"
+read -r -p "Enterキーで閉じます"

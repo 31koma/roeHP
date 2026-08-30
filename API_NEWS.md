@@ -1,17 +1,16 @@
 # Roe's Kitchen News API
 
-Roe's Kitchen公式ホームページのお知らせは、Vercel API RouteからVercel Blobへ保存します。ホームページ側は `/api/news` から公開済みのお知らせを取得して表示します。
+Roe's Kitchen公式ホームページのお知らせは、Cloudflare WorkerからD1へ保存します。画像はR2へ保存し、ホームページ側は `/api/news` から公開済みのお知らせを取得して表示します。
 
 ## 保存先
 
-Vercelプロジェクトに公開Blobストアを接続します。接続時に `BLOB_READ_WRITE_TOKEN` が自動設定されます。投稿認証用の `NEWS_API_KEY` はProduction環境へ設定してください。
+WorkerにはD1 binding `DB` とR2 binding `MEDIA` を接続します。投稿認証用の `NEWS_API_KEY` はWorker secretへ設定してください。
 
 ```text
 NEWS_API_KEY=自動投稿アプリから送る共有キー
-BLOB_READ_WRITE_TOKEN=Vercel Blobが自動設定
 ```
 
-`BLOB_READ_WRITE_TOKEN` はサーバー専用です。ブラウザ側には出さないでください。
+`NEWS_API_KEY` はサーバー専用です。ブラウザ側には出さないでください。未設定時は認証を省略せず、投稿を拒否します。
 
 ## POST /api/news/create
 
@@ -66,7 +65,7 @@ curl -X POST https://roe-kyoto.com/api/news/create \
 
 ## POST /api/news/upload
 
-お知らせ画像を公開Blobストアへ保存します。`x-api-key` と `x-post-id` が必要です。
+お知らせ画像をR2へ保存します。`x-api-key` と `x-post-id` が必要です。キャッシュ事故を避けるため、アップロードごとに新しいファイル名が発行されます。
 
 ```sh
 curl -X POST https://roe-kyoto.com/api/news/upload \
@@ -76,10 +75,10 @@ curl -X POST https://roe-kyoto.com/api/news/upload \
   --data-binary '@image.jpg'
 ```
 
-成功時は、ホームページから表示できる公開画像URLを返します。
+成功時は、ホームページから表示できるWorker配下の公開画像URLを返します。
 
 ```json
-{ "success": true, "url": "https://.../storage/v1/object/public/news-images/...jpg" }
+{ "success": true, "url": "https://.../media/images/...jpg", "fileName": "...jpg" }
 ```
 
 ## GET /api/news
