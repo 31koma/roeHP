@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://roe-kyoto.com/sitemap.xml
+Sitemap: https://roes-kitchen.komatobi3.workers.dev/sitemap.xml

@@ -18,11 +18,6 @@ export default {
     const url = new URL(request.url);
 
     try {
-      if (url.hostname === 'www.roe-kyoto.com') {
-        url.hostname = 'roe-kyoto.com';
-        return Response.redirect(url.toString(), 301);
-      }
-
       if (request.method === 'OPTIONS' && url.pathname.startsWith('/api/')) {
         return new Response(null, { status: 204, headers: CORS_HEADERS });
       }

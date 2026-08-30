@@ -7,18 +7,15 @@
 - お知らせ画像: R2（`roes-kitchen-media`）
 - 投稿認証: Worker secret `NEWS_API_KEY`
 
-`workers.dev` の仮URLで全ページ、D1読み書き、R2画像アップロードを実測したうえで、独自ドメインをWorkerへ登録しています。
+VercelとSupabaseへの依存をなくし、Cloudflareの `workers.dev` で全ページ、D1読み書き、R2画像アップロードを実測しています。
 
 ## 現在の公開状況（2026-08-30）
 
 - Worker: `https://roes-kitchen.komatobi3.workers.dev`
-- Custom Domain: `roe-kyoto.com`、`www.roe-kyoto.com`（Workerへの登録済み）
-- Cloudflare zone: ネームサーバー変更待ち
-- Cloudflare nameservers: `fattouche.ns.cloudflare.com`、`rose.ns.cloudflare.com`
-- 現在のnameservers: `ns1.namegear.co`、`ns2.namegear.co`
-- メール保護: MX（さくら）とSPFのTXTを旧DNSと照合済み
+- Custom Domain: なし
+- `roe-kyoto.com`: 旧HP業者のサービスに属するため使用しない
 
-Namegear側のネームサーバーをCloudflareの2件へ置き換えるまでは、`roe-kyoto.com` の閲覧者には旧サーバーが表示されます。切替後はwwwをルートドメインへ301転送します。
+独自ドメインを新しく取得するまでは、上記の `workers.dev` URLを公式URLとして使用します。
 
 ## 初回だけ行うこと
 
@@ -42,13 +39,4 @@ Namegear側のネームサーバーをCloudflareの2件へ置き換えるまで�
 - 実際にお知らせを1件作成し、一覧に出ることを確認する
 - Workerログにエラーが残っていない
 
-検収は完了しています。旧DNSの自動取り込み結果は信用せず、A 3件、MX 1件、TXT 1件を旧ネームサーバーと照合しました。Cloudflare内のルートとwwwの旧AレコードだけをWorkerのCustom Domainへ置き換え、メール用レコードとワイルドカードAレコードは維持しています。
-
-## ネームサーバー切替後の確認
-
-1. `dig NS roe-kyoto.com +short` がCloudflareの2件を返す
-2. `https://roe-kyoto.com/` が新サイトを返す
-3. `https://www.roe-kyoto.com/` がルートドメインへ301転送される
-4. `/api/news` がニュース2件を返し、R2画像が表示される
-5. MXとTXTが切替前と同じ内容で引ける
-6. 問題がなければ、Cloudflareに残した旧サーバー向けワイルドカードAレコードの要否を判断する
+検収は完了しています。旧Vercel API、旧Supabaseスキーマ、旧ホスティング設定はリポジトリから削除済みです。

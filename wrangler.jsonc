@@ -4,16 +4,6 @@
   "main": "./src/worker.js",
   "compatibility_date": "2026-08-30",
   "workers_dev": true,
-  "routes": [
-    {
-      "pattern": "roe-kyoto.com",
-      "custom_domain": true
-    },
-    {
-      "pattern": "www.roe-kyoto.com",
-      "custom_domain": true
-    }
-  ],
   "assets": {
     "directory": "./dist",
     "binding": "ASSETS",
