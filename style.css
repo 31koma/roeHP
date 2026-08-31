@@ -3,11 +3,11 @@
     --paper-deep: #f2eee5;
     --white: #ffffff;
     --ink: #24211d;
-    --muted: #665f55;
+    --muted: #5f594f;
     --line: #ded4c3;
     --wood: #8d6040;
     --wood-dark: #61442f;
-    --leaf: #586b48;
+    --leaf: #4c5c3e;
     --red: #9f4d3f;
     --shadow: 0 18px 46px rgba(64, 48, 34, 0.12);
     --font-heading: 'Zen Maru Gothic', sans-serif;
@@ -405,7 +405,7 @@ h3 {
 }
 
 .soft-section {
-    background: linear-gradient(135deg, rgba(88, 107, 72, 0.1), rgba(255, 255, 255, 0.34));
+    background: linear-gradient(135deg, rgba(76, 92, 62, 0.1), rgba(255, 255, 255, 0.34));
 }
 
 .section-label {
@@ -614,6 +614,25 @@ h3 {
     object-fit: cover;
 }
 
+.menu-hero,
+.menu-photo-grid figure {
+    position: relative;
+}
+
+.menu-caption {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    padding: 0.4rem 0.9rem;
+    border-top: 1px solid var(--line);
+    background: rgba(255, 255, 255, 0.92);
+    color: var(--ink);
+    font-size: 0.88rem;
+    font-weight: 700;
+    line-height: 1.5;
+}
+
 .menu-addons,
 .daily-menu-note,
 .first-choice {
@@ -674,7 +693,7 @@ h3 {
 
 .first-choice {
     background:
-        linear-gradient(135deg, rgba(88, 107, 72, 0.1), rgba(255, 255, 255, 0.82)),
+        linear-gradient(135deg, rgba(76, 92, 62, 0.1), rgba(255, 255, 255, 0.82)),
         var(--white);
 }
 
@@ -864,7 +883,7 @@ h3 {
 .news-card-meta span {
     padding: 0.05rem 0.5rem;
     border-radius: 999px;
-    background: rgba(88, 107, 72, 0.12);
+    background: rgba(76, 92, 62, 0.12);
 }
 
 .news-card-title {
@@ -1405,4 +1424,97 @@ h3 {
     margin-top: 0.6rem;
     font-size: 0.85rem;
     opacity: 0.7;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   金継ぎ追補（2026-08-31）
+   目的: ①写真の上の白文字を読める明るさに戻す（コントラスト床）
+         ②文字サイズを役割ごとに揃える（24段→10段）
+         ③半透明の白地・画像の下敷きを不透明の白へ
+   文言・リンク先・レイアウトは変えていない。
+   元栓の変更は上の :root（--leaf / --muted）で済ませてある。
+   ══════════════════════════════════════════════════════════════ */
+
+/* ── 写真の上の文字: 文字のある側の影を濃くする（写真は差し替えない） ── */
+.hero-shade {
+    background:
+        linear-gradient(0deg, rgba(24, 19, 14, 0.86), rgba(24, 19, 14, 0.66) 58%, rgba(24, 19, 14, 0.4) 88%, rgba(24, 19, 14, 0.3)),
+        linear-gradient(90deg, rgba(24, 19, 14, 0.6), rgba(24, 19, 14, 0.3) 62%, rgba(24, 19, 14, 0.22));
+}
+
+/* ── 文字サイズ: 役割「本文」を16pxへ寄せる ── */
+.text-block,
+.reservation-text,
+.lunch-reservation-text,
+.news-card-meta,
+.menu-item-featured .menu-message,
+.value-list strong,
+.fact-grid strong,
+.fact-grid span,
+.news-card-body,
+.hero-kicker,
+.hero-proof span,
+.en-text,
+.desktop-nav a {
+    font-size: 1rem;
+}
+
+/* 大きめの本文（リード・価格・モバイルメニュー）は20pxの段へ */
+.mobile-menu a,
+.price,
+.hero-copy {
+    font-size: 1.25rem;
+}
+
+/* 補足の段（14.7px）へ */
+.section-label,
+.recommend-badge,
+.footer-copy,
+.menu-caption {
+    font-size: 0.92rem;
+}
+
+/* 小見出しh3は1本のclampで幅ごとに揃える */
+.menu-title-row h3,
+.first-choice h3,
+.first-choice > div > h3,
+.daily-menu-note h3,
+.daily-menu-note > div > h3 {
+    font-size: clamp(1.35rem, 2.2vw, 1.7rem);
+}
+
+/* ── 地色: 半透明の白と画像の下敷きを不透明の白へ ── */
+.section-white,
+.menu-item {
+    background-color: var(--white);
+}
+
+figure.news-card-image,
+figure.menu-hero,
+.menu-photo-grid > figure {
+    background-color: var(--white);
+}
+
+@media (max-width: 760px) {
+    /* 狭い幅では文字が全幅に広がるので、下からの影を全面に効かせる */
+    .hero-shade {
+        background:
+            linear-gradient(0deg, rgba(24, 19, 14, 0.9), rgba(24, 19, 14, 0.76) 62%, rgba(24, 19, 14, 0.62)),
+            linear-gradient(90deg, rgba(24, 19, 14, 0.45), rgba(24, 19, 14, 0.35));
+    }
+
+    /* 狭い幅だけ割れていた本文とボタンを寄せる */
+    .hero-copy,
+    .concept-note p,
+    .menu-item ul li,
+    .menu-message,
+    .section-heading p,
+    .lead-text p {
+        font-size: 1rem;
+    }
+
+    .btn,
+    .btn-copy {
+        font-size: 1rem;
+    }
 }

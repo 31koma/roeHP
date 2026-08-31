@@ -4,6 +4,16 @@
   "main": "./src/worker.js",
   "compatibility_date": "2026-08-30",
   "workers_dev": true,
+  "routes": [
+    {
+      "pattern": "roeskitchen.com",
+      "custom_domain": true
+    },
+    {
+      "pattern": "www.roeskitchen.com",
+      "custom_domain": true
+    }
+  ],
   "assets": {
     "directory": "./dist",
     "binding": "ASSETS",

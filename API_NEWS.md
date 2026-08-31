@@ -17,7 +17,7 @@ NEWS_API_KEY=自動投稿アプリから送る共有キー
 自動投稿アプリからお知らせを投稿するAPIです。`x-api-key` が `NEWS_API_KEY` と一致した場合のみ保存します。
 
 ```sh
-curl -X POST https://roes-kitchen.komatobi3.workers.dev/api/news/create \
+curl -X POST https://roeskitchen.com/api/news/create \
   -H 'Content-Type: application/json' \
   -H 'x-api-key: NEWS_API_KEYの値' \
   -d '{
@@ -68,7 +68,7 @@ curl -X POST https://roes-kitchen.komatobi3.workers.dev/api/news/create \
 お知らせ画像をR2へ保存します。`x-api-key` と `x-post-id` が必要です。キャッシュ事故を避けるため、アップロードごとに新しいファイル名が発行されます。
 
 ```sh
-curl -X POST https://roes-kitchen.komatobi3.workers.dev/api/news/upload \
+curl -X POST https://roeskitchen.com/api/news/upload \
   -H 'Content-Type: image/jpeg' \
   -H 'x-api-key: NEWS_API_KEYの値' \
   -H 'x-post-id: roes-post-20260716-example' \
@@ -86,8 +86,8 @@ curl -X POST https://roes-kitchen.komatobi3.workers.dev/api/news/upload \
 公開済みのお知らせだけを日付降順で返します。
 
 ```sh
-curl https://roes-kitchen.komatobi3.workers.dev/api/news
-curl https://roes-kitchen.komatobi3.workers.dev/api/news?limit=3
+curl https://roeskitchen.com/api/news
+curl https://roeskitchen.com/api/news?limit=3
 ```
 
 トップページは最新3件、`/news/` は一覧表示に使います。

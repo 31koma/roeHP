@@ -11,11 +11,12 @@ Vercelホスティングへの依存をなくし、Cloudflareの `workers.dev` �
 
 ## 現在の公開状況（2026-08-30）
 
-- Worker: `https://roes-kitchen.komatobi3.workers.dev`
-- Custom Domain: なし
+- 公式URL: `https://roeskitchen.com`
+- Worker fallback: `https://roes-kitchen.komatobi3.workers.dev`
+- Custom Domain: `roeskitchen.com` / `www.roeskitchen.com`
 - `roe-kyoto.com`: 旧HP業者のサービスに属するため使用しない
 
-独自ドメインを新しく取得するまでは、上記の `workers.dev` URLを公式URLとして使用します。
+`www.roeskitchen.com` は `https://roeskitchen.com` へ301転送します。
 
 ## 初回だけ行うこと
 
