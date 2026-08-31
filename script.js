@@ -143,11 +143,8 @@ function createNewsCard(item) {
     const meta = document.createElement('div');
     meta.className = 'news-card-meta';
 
-    const time = document.createElement('time');
-    time.dateTime = item.date;
-    time.textContent = formatNewsDate(item.date);
-    meta.append(time);
-
+    // 日付は表示しない（過去のInstagram投稿を載せると内容と食い違うため）。
+    // 並び順の管理には item.date を内部で使い続ける。
     if (item.source) {
         const source = document.createElement('span');
         source.textContent = item.source;
@@ -209,20 +206,6 @@ function createNewsDetails(item) {
     });
 
     return list;
-}
-
-function formatNewsDate(dateText) {
-    const date = new Date(`${dateText}T00:00:00+09:00`);
-
-    if (Number.isNaN(date.getTime())) {
-        return dateText;
-    }
-
-    return new Intl.DateTimeFormat('ja-JP', {
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric'
-    }).format(date);
 }
 
 // DM例文コピーボタン
