@@ -83,9 +83,9 @@ async function renderNewsLists() {
 
     const newsItems = await fetchNewsItems();
 
-    // 「お知らせ・休業」（idが notice- / oshirase- で始まる投稿）は、
+    // 「お知らせ・休業」（idが notice- / oshirase- で始まる、またはsourceがお知らせの投稿）は、
     // 毎日の定食投稿で流れないよう、常に先頭へ固定表示する
-    const isNotice = item => /^(notice|oshirase)-/.test(item.id);
+    const isNotice = item => /^(notice|oshirase)-/.test(item.id) || item.source === 'お知らせ';
 
     lists.forEach(list => {
         const limit = Number.parseInt(list.dataset.newsLimit, 10);
@@ -94,7 +94,9 @@ async function renderNewsLists() {
         if (Number.isFinite(limit)) {
             const latestNotice = newsItems.find(isNotice);
             if (latestNotice) {
-                orderedItems = [latestNotice, ...newsItems.filter(item => item !== latestNotice)];
+                // 1枠目＝最新のお知らせ（営業日カレンダー等）で固定、
+                // 残りの枠＝日替わり投稿のみ。お知らせが何件増えても最新1件だけが残る
+                orderedItems = [latestNotice, ...newsItems.filter(item => !isNotice(item))];
             }
         }
 
