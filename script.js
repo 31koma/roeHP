@@ -84,7 +84,7 @@ async function renderNewsLists() {
     const newsItems = await fetchNewsItems();
 
     // 「お知らせ・休業」（idが notice- / oshirase- で始まる、またはsourceがお知らせの投稿）は、
-    // 毎日の定食投稿で流れないよう、常に先頭へ固定表示する
+    // 投稿日から35日間、毎日の定食投稿で流れないよう先頭へ固定表示する
     const isNotice = item => /^(notice|oshirase)-/.test(item.id) || item.source === 'お知らせ';
 
     lists.forEach(list => {
@@ -92,12 +92,27 @@ async function renderNewsLists() {
 
         let orderedItems = newsItems;
         if (Number.isFinite(limit)) {
-            const latestNotice = newsItems.find(isNotice);
-            if (latestNotice) {
-                // 1枠目＝最新のお知らせ（営業日カレンダー等）で固定、
-                // 残りの枠＝日替わり投稿のみ。お知らせが何件増えても最新1件だけが残る
-                orderedItems = [latestNotice, ...newsItems.filter(item => !isNotice(item))];
-            }
+            const today = new Date();
+            const todayUtc = Date.UTC(today.getFullYear(), today.getMonth(), today.getDate());
+            const millisecondsPerDay = 24 * 60 * 60 * 1000;
+            const byDateDescending = (a, b) => b.date.localeCompare(a.date) || b.id.localeCompare(a.id);
+            const fixedNotices = newsItems
+                .filter(item => {
+                    if (!isNotice(item)) {
+                        return false;
+                    }
+
+                    const [year, month, day] = item.date.split('-').map(Number);
+                    const itemDateUtc = Date.UTC(year, month - 1, day);
+                    const ageInDays = (todayUtc - itemDateUtc) / millisecondsPerDay;
+                    return ageInDays <= 35;
+                })
+                .sort(byDateDescending);
+            const regularItems = newsItems
+                .filter(item => !isNotice(item))
+                .sort(byDateDescending);
+
+            orderedItems = [...fixedNotices, ...regularItems];
         }
 
         const visibleItems = Number.isFinite(limit) ? orderedItems.slice(0, limit) : orderedItems;
